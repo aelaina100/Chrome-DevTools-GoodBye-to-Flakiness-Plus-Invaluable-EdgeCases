@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2025-02-09T13:28:24 EST" name="Default suite" finished-at="2025-02-09T13:28:24 EST" duration-ms="64">
+    <groups>
+    </groups>
+    <test started-at="2025-02-09T13:28:24 EST" name="Default test" finished-at="2025-02-09T13:28:24 EST" duration-ms="64">
+      <class name="ChromeDevToolsProtocol.ChromeDevTools.B_EmulateMobileOnWebpage">
+        <test-method signature="emulateMobileOnWeb()[pri:0, instance:ChromeDevToolsProtocol.ChromeDevTools.B_EmulateMobileOnWebpage@77fbd92c]" started-at="2025-02-09T13:28:24 EST" name="emulateMobileOnWeb" finished-at="2025-02-09T13:28:24 EST" duration-ms="13" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- emulateMobileOnWeb -->
+      </class> <!-- ChromeDevToolsProtocol.ChromeDevTools.B_EmulateMobileOnWebpage -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

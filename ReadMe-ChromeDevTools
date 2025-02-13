@@ -1,0 +1,312 @@
+
+                                             **************************UNDER CONSTRUCTION****************************************
+                                             **************************UNDER CONSTRUCTION****************************************
+                                                          
+____________________________________________________________________________________________________________________________________________________________________
+
+1- What is Chrome DevTools ?
+2- What is Chrome DevTools Protocol (CDP) ?
+3- For what purposes is the Chrome DevTools used in automation ?
+4- What is  the class hierarchy in Selenium 4.0 + ? 
+5- What is  the class hierarchy before Selenium 4.0 ? 
+6- Give an example on how Chrome DevTools help in reducing the need for test data ?
+7- What are the  lines of code to plug Chrome DevTools into Selenium ?
+8- Show the architecture of Chrome DevTools in automation.
+
+____________________________________________________________________________________________________________________________________________________________________
+
+
+1- What is Chrome DevTools ?
+
+Chrome DevTools is a set of web developer tools built directly into the Google Chrome/Edge browser (Plus any other Chromium-based browsers).
+With Chrome DevTools, developers have deeper access to the Applications that render on the browser.
+
+To view Chrome DevTools in browser ======> 
+Launch your Chrome or Edge browser > Right-click any where > Click on 'Inspect' > what comes up is the Chrome Developers Tools with the tabs of:	
+
+-Elements
+-Console (Displays UI console logs)
+-Network (Where API requests/responses made by the web app are displayed)
+-Performance ( Performance metrics are collected)
+-Memory
+-Application
+-Security
+-Plus many & many more tabs to acquire more info about the application !
+
+So basically, this is what one uses in order to debug their web application (In order to get an insight on how it's functioning step by step).
+__________________________________________________________________________________________________________________________________________________________________
+
+Now imagine if Selenium can get an access to all of these tabs (features) of Chrome DevTools. This powerful move is feasible if you integrate Selenium 4.0 and up 
+with Chrome DevTools. This means that Selenium is no longer a strictly UI automation tool. It now stretches to the realm of API, Performance, & Security testing plus acquiring 
+additional powerful features such as collecting console logs from the Console tab and much more.
+
+Note: Chrome DevTools can be integrated with a variety of test automation tools; such as Appium, PlayWright, Selenium and mor.
+__________________________________________________________________________________________________________________________________________________________________
+
+********************** 2-  Now, what is Chrome DevTools Protocol (CDP)? (As opposed to Chrome DevTools) ?
+
+Answer: 
+
+It is the mechanism by which the Chrome DevTools UI feature in browser: 1- displays its info under the various tabs. 2- Enables the user to access & interact with this info (Ex: Manually clearing cache under the Network tab).
+This CDP mechanism also happens to expose a huge list of methods (APIs) that can programmatically (Instead of manually in 1& 2 above) enable user to monitor the data,
+interact with it, and manipulate it such as mocking network requests/responses and so much more. 
+
+To view this huge list of methods (APIs) that CDP exposes ========>
+
+Go to Chrome DevTools Protocol official website (Google it)- As of now it is: https://chromedevtools.github.io/devtools-protocol/
+On the left-hand side under "Domains", these exist many sections corresponding to the tabs of the Chrome DevTools in browser.
+Let's look at the section of, for example, "Network": These are methods of the Network Domain. 
+For example:  "Network.clearBrowserCache" is a  method that clears browser cache instead of doing it manually in the Network tab of the Chrome DevTools in browser.  
+                         
+              
+                 Integrating Selenium with the Chrome DevTools feature has been made possible since the release of Selenium 4.0 version.
+	                   As a result, this opens up lots of possibilities & opportunities to perform out-of-box testing with many edge/negative
+	                                test case scenarios that are both powerful and meaningful in Selenium WebDriver.
+______________________________________________________________________________________________________________________________________________________________
+Very important note:
+The chrome DevTools developers and the Selenium developers are entirely 2 separate entities that neither directly work nor directly communicate with each other.
+					The Chrome DevTool developers have established the CDP (Chrome DevTools protocol) that enable users to manually access 
+					the UI of the Chrome DevTools in browser and interact with it. They also decided, for this CDP, to write methods that automate this manual process.
+					These methods can be used by any automation tool such as Selenium, Appium, PlayWright, and many more.
+					
+					For example, on the CDP official website, one of the methods that Chrome DevTools developers have written is: setDeviceMetricsOverride()
+					So, under the 'Emulation'domain (on the CDP website), this method is listed but in the following format:
+					[Emulation.setDeviceMetricsOverride] // 'Emulation' in this line is a domain in CDP language.
+					
+So now, the question is, how can various automation tools such as Selenium use this method ?? (Once again, these methods are NOT part of the Selenium library).
+	The answer is: Selenium developers have written certain lines of code:
+	               where one portion specific to Selenium (connects to the CDP repository ?)
+	               and the 2nd portion, calls that specific method (In my case: setDeviceMetricsOverride()) under CDP.
+	               
+	               And the cool things is: these two portions of lines of code are wrapped under a Selenium method that has the EXACT same name as the one in CPD.
+	               So this selenium method name is:  "setDeviceMetricsOverride" and the one in CPD is  "setDeviceMetricsOverride".
+	               
+and now, the question is: Under what Selenium class is the method "setDeviceMetricsOverride" included in ? ( A method is written in class right ?) 	               
+	 The answer is: "Emulation" (same story...).
+	 So, in CPD, "Emulation" is a domain. Selenium developers gave the same EXACT name to their Selenium class.
+	 
+	 The Selenium line of code is ==========> devTools.send(Emulation.setDeviceMetricsOverride(arguments go here));
+	 if you double click on the Selenium class of "Emulation", in this Emulation.java class file, there will be tons of Selenium methods listed
+	 that have the EXACT SAME NAMES of all the CDP methods listed under the 'Emulation' domain on the CDP website.
+	 	where, once again each single Selenium method has two portions: 1st is specific to Selenium where it makes a connection with the CDP repo.
+	 	                                                                2nd: calls the method in CDP.
+	              
+	  Note: In====> devTools.send(Emulation.setDeviceMetricsOverride(arguments go here));
+	                the entire argument of .send() that is "Emulation.setDeviceMetricsOverride()" is called a command/event.
+
+					
+	
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+3-  Chrome DevTools are used for the following purposes: (A real-time automation examples will be provided in this project).
+		                                                       
+		                        1- Capture, monitor, & stub network requests/responses.
+		                        2*- Inject session cookies to perform basic authorization.
+		                        3*- Mock device coordinates for mobile view
+		                        4- Check & Monitor site performance.
+		                        5*- Mock geo-location of the user.
+		                        6*- Block network requests
+		                        7*- Mock faster/slower network speeds.
+		                        8- Execute & debug Java Script.
+		                        9*- View Console Logs.
+		                        
+    Below is some elaboration on some of the points mentioned above:
+                             
+For each single point listed above, test case(s)/ Test NG method(s) will be written in this project.
+These are going to be very detailed examples and heavily commented.
+
+  *2[One does not need to login with their username & password, if they have an active session cookie. Where this cookie can be injected into the browser hence
+     bypassing login].
+ 
+  3*[One can render their browser to look like/Emulate that of a specific device: In the Chrome DevTools UI of your browser, click on the tab of 'Toggle Device Emulation' &
+    you'll see a list of mobile devices available for you to emulate such as Iphone X, Samsung Gallexy, etc. So one can automate their web application in this
+    mode also. Actually, this could entirely supercede the need for a specialized mobile automation framework such as Appium if your app is purely a web one (not
+    a native or a hybrid mobile app) and this is the future for mobile web applications.]
+ 		                        
+  5*[When you are trying to access some website, your browser automatically provides the longitude & latitude. Hence, directing you to the server of the country 
+     that you are at. Prior to the integration of Chrome DevTools with Selenium, if one wanted USING AUTOMATION SCRIPTS to access the same website app but 
+     specific to some other country, then one had to either: 
+     
+     1- Get the website URL that reflects/represents that country so that its server in that country is accessed (for example: www.amazon.es  is for Spain).
+            Now, this is impractical as you have to include a new URL in your automation. But that was the only way.
+     		
+     2- Be in that other country. Reason is: Some websites only have one specific fixed URL that does not change even though the experience/content of the web site
+     		changes from one country to the other. 
+     		
+     This problem has been resolved with Selenium 4.0 and up; Where the integration of the Chrome DevTools with Selenium has been made feasible:
+     WHERE you can mock the geo-location of the user by setting the longitude and latitude in your automation script.So that as soon as the browser
+     is launched, the server of the target country will be the one hosting the web app you're going to automate on so that you can test the site experience
+     in that country from your country.
+     
+     6*[Blocking network requests with Selenium: EXTREMELY IMPORTANT for reducing flakiness- To illustrate by giving an example:
+     
+        Navigate to amazon.com: Notice that page takes about 4-5 seconds to load as there are lots of images and css loading on the page.
+        
+                                Examine this issue further: Open the "Network" tab and refresh the page: You're going to see lots of requests
+                                being made for images and css while they are loading on this amazon webpage.
+                                
+     	Now, our goal is to make this page load faster by blocking ALL of network API requests for loading the css & the .png/.jpg images.
+     	***********************And this can be done, in automation, with only one simple line of code ! using chrome DevTools***********************************
+     	Whereas manually, it can be done in Chrome DevTools UI by checking the box of "Blocked Requests": So generally if something can be done manually there, 
+     	then it can ALWAYS be done programmatically [with the help of automation by integrating Selenium with Chrome DevTools].
+     	
+     	We do NOT need the images and css on the webpage since we are performing functional automation. The css and images are totally useless in this regard.
+     	so eventually no sync + flakiness issues are encountered as site, now, loads faster.[ No longer running into inconsistent failures(16:28).4
+     	
+     	7* Mocking network speeds: 
+     	   The following scenario is one of the MOST COMMON & FUNDEMENTAL issue in test automation, yet it is still
+     	   unresolved in most automation projects (Simply due to not integrating Chrome DevTools with the automation
+     	   tool of choice which allows the utilization of the feature of: Mocking slower/Faster network responses.
+     	   This scenario is as follows:
+     	   
+     	   At the time of developing and debugging you automation scripts in your editor, you come up with scripts 
+     	   that work just fine. However; when you start running your automation build from a continuous integration tool
+     	   such as Jenkins or whatever, you notice that some of the testcases are failing/ flaky. This is one of the most
+     	   frustrating issues where hours upon hours are spent 'tweaking' the test cases so that they pass. needless to 
+     	   say, in general, falkiness is attributed to many factors that are: 1- On the test case design level 2- on whether
+     	   you're running your jobs in headless mode (Doing so requires incorporating specific coding style in each testcase),
+     	   and much more [Regarding flakiness, I will be writing a lengthy article that's going to be icluded in this github
+     	   account]. Nevertheless, one of most common reasons to flakiness is: SLow network speeds.
+     	   
+     	   Let's explore this further:
+     	   Traffic might be too high on your webpage at the time you run your automation scripts. For example,
+     	   the off-shore team, are accessing/ working on the webpage while your automation scripts are running at the
+     	   same time in your nightly time zone. Therefore, the server is bombarded = slowness = automation scripts are failing when running the Jenkins
+     	   job (Even though they have been passing in editor when they were being constructed on your PC)De
+     	   
+     	   Solution:
+     	   Using Chrome DevTools, mock slower network speeds so that you CAN understand what sync issues might be
+     	   responsible for failing your scripts. Once this is done, now you can develop your test scripts in your
+     	   editor according to that. 
+     	   		For example, At night according to your time zone, when running your automation job (And while
+     	   		the traffic to the webpage is high as it is worked on by the off-shore team), the web page is 
+     	   		taking 5 seconds to load. Hence, the sync issues.
+     	   		So when developing test cases in editor, you can mock this slow network speed in your browser
+     	   		so that you can utilize synchronization/wait properly. Manually this is done with the 'No Throttling' checkbox
+     	   		in Chrome DevTools UI in browser in order to reduce the network speed on the browser. We will see how
+     	   		to do that with the help of automation (programmatically).
+     	   		
+   *9 Access to browser console logs/error logs can NOT be captured by Selenium without the Chrome DevTools integration.
+     These logs are VERY important as they could point out to errors that can not be discovered by Selenium alone.
+     Console error logs denotes a bug that can not be captured by Selenium alone.
+     In summary reporting in Selenium can be achieved via:
+      1- Extent reports 2- Log4J 3- Screenshots 4- Assertin fail messages 5- And now: Browser Console logs via Chrome DevTools integration.
+     	    
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+              **********************************************************   Class Hierarchy in Selenium 4.0 and onwards:     ********************************************************** 
+_
+ A- For Chrome Driver / Edge Driver  (In addition to Brave,Opera, & other chromium-based browsers):=========>
+  
+  
+   Object
+       └─ WebDriver 
+                └─ Remote WebDriver 
+                               └─ Chromium Driver**
+                                             └─ Chrome Driver / Edge Driver  (In addition to Brave,Opera, & other chromium-based browsers).
+   
+  ChromeDriver driver= new ChromeDriver();
+  DevTools devTools= driver.getDevTools();
+  DevTools.createSession(); 
+  
+  Now
+                                        
+                   [Remember: In the above structure (and always), "WebDriver" is the ONLY interface & "Remote WebDriver" is the class that implements this interface.]
+                                        
+**Chromium Driver has been introduced since Selenium 4.0: It contains all the automation methods of Chrome DevTools. Where  Chrome Driver / Edge Driver inherits directly from "Chromium Driver".
+
+   		
+ ________________________________________________________________________________________________
+ B- For FireFox driver ( & any other non chromium-based browsers):========================>   
+                               
+   Object
+       └─ WebDriver
+                └─ Remote WebDriver  
+                                └─ FireFox Driver
+                                
+           
+FireFox Driver inherits directly from "Remote Web Driver".
+__________________________________________________________________________________________________________________________________________________________________________________________________________        
+                 **********************************************************    Class Hierarchy PRIOR to Selenium 4.0:    ********************************************************** 
+                               
+   Prior to Selenium 4.0, the above hierarchy is true MINUS "Chromium Driver":
+   
+     Object
+       └─ WebDriver
+                └─ Remote WebDriver  
+                                └─ ChromeDriver
+                                └─ InternetExplorerDriver
+                                └─ SafariDriver
+                                └─ EdgeDriver
+                                └─ OperaDriver
+                                           
+    Where all drivers inherit directly from "Remote Web Driver".
+_________________________________________________________________________________________________________________________________________________________________________________________________
+
+To access Chrome DevTools methods in Selenium 4.0 and above, use ===========>  
+
+ChromeDriver driver= new ChromeDriver();  // 'ChromeDriver' on the left side is the 'Chromium Driver' class. containing all the methods of the Chrome DevTools. It also inherits ALL methods
+                                              present in the Remote WebDriver class that implements the interface of WebDriver  ((Just look at the hierarchy illustrated above !).
+                                                                
+Instead of the usual:   WebDriver driver= new ChromeDriver(); // Where you will NOT have an access to the methods of the Chrome DevTools (Just look at the hierarchy illustrated above !).
+_________________________________________________________________________________________________________________________________________________________________________________________________
+
+Chrome DevTools mitigates the challenge of acquiring test data and thereby reduces flakiness.
+     
+
+To begin grasping the usefulness of Chrome DevTools in automation, read the following scenarios:===========>
+	
+	A web page displays, by default, a number of records on its home page.
+	These many displayed records are the results of some Json response, relayed by some API, to the client (Front end) 
+	Where this Json response has a number of sections each corresponding to some record displayed in the UI.
+	
+	Now, I have a scenario where I need to verify that some specific error message will only appear in the UI when only 1 record is displayed:
+	The usual solution to that is to have an access to another account, where logging in will result in only 1 record being displayed where its associated
+	error message should also be displayed.
+	
+	However, we know that one of the challenges in QA is procuring test data ( and procuring them on time shall I add, before the start of the sprint.
+	It is still a challenge, even with the positive pre-assumption that this is going to be a possible/easy task !).
+	
+	And, assume that you've finally succeeded in procuring this test data before the start of the sprint...
+	But what if you login at sometime in the future, only to discover that more than 1 record now exists ! (Where the error message, associated with
+	1 record being present in the UI, no longer appears !). This is a very valid scenario and as a QA, one has to think in this fashion. As you can see,
+	such a scenario introduces flakiness to your automated suite, of the false negative type [Script intended to run against one record but instead, an additional
+	record(s) is now present.. regardless of why and how]. So this automated test case will be deemed as 'flaky' because the data in the UI is dynamic and
+	will be subsequently removed from the automation suite. However, and once again, this problem can be tactfully resolved utilizing Chrome DevTools
+	where the Json response responsible for the dynamic data in the UI is going to be mocked in the desired way so that in this very specific example,
+	only one record is going to be shown in the UI using the same one original account.
+	
+	To solve this issue and to, in general, overcome the challenge of procuring data in QA along with reducing flakiness in your automation project,
+	                                      **** This is where Chrome DevTools automation come into picture ****
+	
+	Where, You're going to mock the Json response so that it only contains one section corresponding to ONLY one record being displayed in the UI.
+	WITH once again only one account (without the need to have an additional account that even if acquired won't be reliable in the first place !).
+	
+		So with this ONE & ONLY Original single account that, by default, displays many records, one can =============>
+		
+		1- Build a Test case (Test NG method), without mocking the JSon response, handling a scenario involving the many records.
+		2- Build a 2nd Test case (Test NG method) but with mocking the Json response so that ONLy 1 record is displayed so the error msg could be verified.
+		3- Build a 3rd Test Case (Test NG method) but with a different way of mocking the Json response so that, for example, 2 very specific combinations of records
+		   are ONLY displayed so that an associated feature can be verified, etc. etc.
+________________________________________________________________________________________________________________________________________________________________________                                              
+                           7- The  lines of code in order to start using ChromeDev Tools in Selenium are:
+
+1- ChromeDriver driver= new ChromeDriver();      
+     // Instead of 'WebDriver driver= new ChromeDriver()' as 'WebDriver' interface' does not have the methods of Chrome DevTools.
+     // Also, if you check the hierarchy above of Selenium 4.0 +, you understand that 'ChromeDriver' will ALSO have access to all methods present in WebDriver. 
+
+2- DevTools devTools= driver.getDevTools(); 
+3- devTools.createSession(); 
+
+//Now, send command to CDP methods: CDP methods will invoke + get access to Chrome DevTools methods. For example:
+   // this method below: is to emulate a SPECIFIC mobile device on the webpage (Iphone 12, Samsung Galaxy,etc.)
+   // this is done by providing screen width & height, etc.
+4- devTools.send(Emulation.setDeviceMetricsOverride(600,1000,50,true, optional....);    
+     // "Emulation.setDeviceMetricsOverride()" is an already developed/devised method in the "Emulation" class. 
+	
+
+5- driver.get("www.amazon.com");  // The output: is that of a mobile view.
+______________________________________________________________________________________________________________________________________________________________
+
+8- The architecture of the Chrome DevTools in automation is shown in the .jpg image under this project "ChromDevToolsarchitectiure.jpg" 
+______________________________________________________________________________________________________________________________________________________________        
+
+	
