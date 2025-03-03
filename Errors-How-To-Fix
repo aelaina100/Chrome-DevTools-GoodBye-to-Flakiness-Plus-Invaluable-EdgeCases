@@ -1,0 +1,20 @@
+1- You may come across the following error: 
+
+FAILED: ChromeDevToolsProtocol.ChromeDevTools.E_Extract_Nework_Responses_StatusCode.extractNetworkResponses
+org.openqa.selenium.devtools.DevToolsException: {"id":1,"error":{"code":-32601,"message":"'Network.enable' wasn't found"}}
+
+To fix it: Include the below dependency:
+
+
+<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-devtools-v113 -->
+
+<dependency>
+
+    <groupId>org.seleniumhq.selenium</groupId>
+
+    <artifactId>selenium-devtools-v113</artifactId>
+
+    <version>4.9.1</version>
+
+</dependency>
+=================================================================================================================================
