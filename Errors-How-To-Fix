@@ -1,0 +1,18 @@
+
+Note: There exists indeed a Chrome DevTools dependency that has never been included in the project (Just as the dependency below):
+
+<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-devtools-v113 -->
+
+<dependency>
+
+    <groupId>org.seleniumhq.selenium</groupId>
+
+    <artifactId>selenium-devtools-v113</artifactId>
+
+    <version>4.9.1</version>
+
+</dependency>
+
+//Investigate further, why a dependency is needed in the first place, since Chrome DevTools protocol methods
+are already accessible from the newly devised Chromium class (As of Selenium 4.0 and up).
+=================================================================================================================================
